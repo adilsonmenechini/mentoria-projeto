@@ -23,3 +23,8 @@
     Configuração do Prometheus: Crie um arquivo de configuração do Prometheus que defina os targets para o Rabbitmq e outros serviços.
 
     Dashboards do Grafana: Crie dashboards no Grafana para visualizar métricas como latência, throughput e taxa de erro do Rabbitmq. Utilize gráficos e alertas para monitorar a saúde do sistema.
+
+
+## Diagrama da Arquitetura
+
+![Diagrama](/docs/Diagrama.png)

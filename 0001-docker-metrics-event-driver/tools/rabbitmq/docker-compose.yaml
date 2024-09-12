@@ -1,0 +1,49 @@
+volumes:
+  rabbitmq_config:
+
+networks:
+  tools:
+   name: tools
+   external: true
+
+services:
+  rabbit-1: &rabbitmq
+    image: rabbitmq:3.8-management
+    hostname: rabbit-1
+    container_name: rabbit-1
+    volumes:
+      - ./config/rabbitmq.conf:/config/rabbitmq.conf:ro 
+      - rabbitmq_config:/var/lib/rabbitmq 
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_CONFIG_FILE: /config/rabbitmq
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    ports:
+      - 5672:5672
+      - 15672:15672
+      - 15692:15692
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+    networks:
+      - tools
+  rabbit-2:
+    << : *rabbitmq
+    hostname: rabbit-2
+    container_name: rabbit-2
+    ports:
+      - 5673:5672
+      - 15673:15672
+      - 15693:15692
+  rabbit-3:
+    << : *rabbitmq
+    hostname: rabbit-3
+    container_name: rabbit-3
+    ports:
+      - 5674:5672
+      - 15674:15672
+      - 15694:15692
